@@ -9,22 +9,9 @@ KEY="qgpq6XjqH8m5P7AS" # needs to be random so people don't do hacking thing
 TIMEOUT = 30 #seconds
 
 servers = {}
-# Datagram (udp) socket
-try:
-	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	print 'Socket created'
-except socket.error, msg :
-	print 'Failed to create socket. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
-	sys.exit()
- 
- 
-# Bind socket to local host and port
-try:
-	s.bind((HOST, PORT))
-except socket.error , msg:
-	print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
-	sys.exit()
-	 
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.bind((HOST, PORT))
+
 print 'Socket bind complete'
 
 def update():
@@ -40,7 +27,6 @@ while 1:
 	d = s.recvfrom(1024)
 	data = d[0]
 	addr = d[1]
-	
 	parts=data.split(' ')
 	
 	if len(parts)<2:
@@ -54,9 +40,10 @@ while 1:
 
 	
 	update()
-	
-	print('cmd',cmd)
 	if cmd == 'ping':
+		if info == '':
+			info = addr[0]
+		
 		servers[info] = datetime.now()
 		s.sendto(KEY+' pong' , addr)
 	elif cmd == 'ls':
