@@ -41,4 +41,4 @@ You will get:
 $KEY LS SERVER1 SERVER2 SERVER3 ...
 ```
 
-LS will return the list of servers
+you will get the list of servers
